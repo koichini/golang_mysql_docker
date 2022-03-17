@@ -1,0 +1,9 @@
+version: "3"
+services: 
+  flashcard:
+    build: . # ビルドに使うDockerfileの場所
+    tty: true # コンテナの永続化
+    ports: # ホストOSのポートとコンテナのポートの接続
+      - "8080:8080"
+    volumes:
+      - ./app:/go/src/app
