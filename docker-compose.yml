@@ -7,3 +7,17 @@ services:
       - "8080:8080"
     volumes:
       - ./app:/go/src/app
+    depends_on:
+      - mysql
+  
+  mysql:
+    build: ./mysql/
+    volumes:
+      # 初期データを投入するSQLが格納されているdir
+      - ./mysql/init:/docker-entrypoint-initdb.d
+      # 永続化するときにマウントするdir
+      - ./mysql/data:/var/lib/mysql
+    environment: 
+      - MYSQL_ROOT_PASSWORD=password
+    ports:
+      - "3306:3306"
