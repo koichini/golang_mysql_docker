@@ -1,2 +1,0 @@
-# flashcard
-flashcards in golang

@@ -1,9 +1,48 @@
 version: "3"
-services: 
-  flashcard:
-    build: . # ビルドに使うDockerfileの場所
-    tty: true # コンテナの永続化
-    ports: # ホストOSのポートとコンテナのポートの接続
-      - "8080:8080"
+
+services:
+  golang_service:
+    container_name: golang_service
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    env_file:
+      - ./mysql/.env
+    depends_on:
+      - mysql_golang
     volumes:
-      - ./app:/go/src/app
+      - type: bind
+        source: ./src
+        target: /go/src
+    networks:
+      - golang_network
+
+  mysql_golang:
+    container_name: mysql_golang
+    build:
+      context: ./mysql
+      dockerfile: Dockerfile
+    ports:
+      - 3306:3306
+    volumes:
+      - type: volume
+        source: mysql_golang_volume
+        target: /var/lib/mysql
+      - type: bind
+        source: ./mysql/init
+        target: /docker-entrypoint-initdb.d
+    env_file:
+      - ./mysql/.env
+    restart: always
+    networks:
+      - golang_network
+
+
+networks:
+  golang_network:
+    external: true
+volumes:
+  mysql_golang_volume:
+    name: mysql_golang_volume
