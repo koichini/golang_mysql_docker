@@ -13,6 +13,7 @@ services:
     depends_on:
       - mysql_golang
     volumes:
+<<<<<<< HEAD
       - type: bind
         source: ./src
         target: /go/src
@@ -46,3 +47,20 @@ networks:
 volumes:
   mysql_golang_volume:
     name: mysql_golang_volume
+=======
+      - ./app:/go/src/app
+    depends_on:
+      - mysql
+  
+  mysql:
+    build: ./mysql/
+    volumes:
+      # 初期データを投入するSQLが格納されているdir
+      - ./mysql/init:/docker-entrypoint-initdb.d
+      # 永続化するときにマウントするdir
+      - ./mysql/data:/var/lib/mysql
+    environment: 
+      - MYSQL_ROOT_PASSWORD=password
+    ports:
+      - "3306:3306"
+>>>>>>> 3fa0ab2d9ac1cb2514efc9194d78201b32388d43
