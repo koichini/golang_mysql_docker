@@ -3,7 +3,6 @@ package article
 import (
 	"database/sql"
 	"fmt"
-	"log"
 )
 
 type Article struct {
