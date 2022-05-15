@@ -1,4 +1,4 @@
-# flashcard
+# golang & MySQL Docker
 
 ## docker
 基本的な立ち上げ
